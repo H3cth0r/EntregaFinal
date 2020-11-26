@@ -119,6 +119,8 @@ axis equal;
 % sprintf("Radio Curvatura Punto Inflexión: %s", rc_inflection(1))
 %daspect manual;
 
+plot_3d_cube(80, 10, 10, [0.75 0.75 0.75], 50, 70, 0);
+
 %% Functions 
 function h = plotcircle(xs,ys,r)
     th = 0:pi/50:2*pi;
@@ -140,6 +142,21 @@ end
 % This function should plot a square depending of x,y,z lengths and
 % point where you want it to plot. Z will be set to 0
 % (lenth_x, length_y, length_z, x_point, y_point)
-function square = plotSquare(length_x, length_y, length_z, x_point, y_point)
-    
+function plot_3d_cube(x_length, y_length, z_length, cube_color, x_point, y_point, z_point) %%theta in radian
+% Parameters
+%x_length = 80; y_length = 20; z_length = 20; cube_color = [0.75 0.75 0.75]; x_point = 50; y_point = 70;z_point = 0;
+
+H=[0+x_point ,1*x_length+x_point ,0+x_point ,1*x_length+x_point ,0+x_point ,1*x_length+x_point,0+x_point,1*x_length+x_point; 0+y_point,0+y_point,1*y_length+y_point,1*y_length+y_point,0+y_point,0+y_point,1*y_length+y_point,1*y_length+y_point; 0+z_point,0+z_point,0+z_point,0+z_point,1*z_length+z_point ,1*z_length+z_point,1*z_length+z_point, 1*z_length+z_point];
+%H=[0 ,80 ,0 ,80 ,0 ,80 ,0 ,80; 0 ,0 ,20 ,20 ,0 ,0 ,20 ,20; 0 ,0 ,0 ,0 ,20 ,20 ,20 , 20]; %Vertices of the cube
+S=[1 2 4 3; 1 2 6 5; 1 3 7 5; 3 4 8 7; 2 4 8 6; 5 6 8 7]; %Surfaces of the cube
+figure(1)
+hold on
+H1 = zeros(size(S,1),4) ;
+H2 = zeros(size(S,1),4) ;
+H3 = zeros(size(S,1),4) ;
+    for i=1:size(S,1)    
+        Si=S(i,:); 
+        fill3(H(1,Si),H(2,Si),H(3,Si),cube_color,'facealpha',1)
+    end
+%axis equal, hold off, view(20,10)
 end
