@@ -136,3 +136,9 @@ function t = radiocurvatura(xs, ys,fdtx, f2dtx)
     beta = ys + ((1 + fdtx^2)/f2dtx);
     t = [r_c, alfa, beta];
 end
+
+% This function should plot a square depending of x,y,z lengths and
+% point where you want it to plot
+% (cube_x, cube_y, cube_z, )
+function square = plotSquare()
+end

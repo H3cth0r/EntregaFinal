@@ -43,7 +43,7 @@ r1 = abs(((1+fdt(x1)^2)^(3/2))/f2dt(x1));
 r2 = abs(((1+fdt(x2)^2)^(3/2))/f2dt(x2));
 
 
-lfdt = @(x) sqrt((1 + fdt(x)).^2);
+lfdt = @(x) sqrt(1 + fdt(x).^2);
 longitudPista = integral(lfdt, xi, xf);
 
 % Graficación
@@ -85,18 +85,18 @@ primeraD = (a*(3*x.^2)) + (b*(2*x)) + c;
 answer = solve( primeraD == 0, x, 'MaxDegree', 3);
 resultado = vpa(answer,6);
 sprintf("Max: %s , %s", resultado(1), f(resultado(1)))
-plot(resultado(1), f(resultado(1)), '.');
-text(resultado(1), f(resultado(1)), '\leftarrow Max')
+plot3(resultado(1), f(resultado(1)),3, '.');   
+text(resultado(1), f(resultado(1)),10, '\leftarrow Max')
 sprintf("Min: %s, %s", resultado(2), f(resultado(2)))
-plot(resultado(2), f(resultado(2)), 1, '.')
-text(resultado(2), f(resultado(2)), '\leftarrow Min')
+plot3(resultado(2), f(resultado(2)), 3, '.')
+text(resultado(2), f(resultado(2)),10, '\leftarrow Min')
 
 % Inflection point
 segundaD = 6*a*x + 2*b;
 answer2 = vpasolve(segundaD == 0, x, [-inf, inf]);
 sprintf("Inflection: %s , %s", answer2(1), f(answer2(1)))
-plot3(answer2(1), f(answer2(1)),2, '.');
-text(answer2(1), f(answer2(1)), '\leftarrow Inflection')
+plot3(answer2(1), f(answer2(1)),3, '.');
+text(answer2(1), f(answer2(1)),10, '\leftarrow Inflection')
 
 % Track length
 longitud_pista = integral(lfdt, xi, xf);
@@ -105,12 +105,12 @@ disp("Longitud de la pista: " + longitud_pista);
 % Radius of curvature
 valores = radiocurvatura(resultado(1), f(resultado(1)), fdt(resultado(1)), f2dt(resultado(1)));
 plotcircle(valores(2), valores(3), valores(1));
-plot3(valores(2), valores(3), 2, '.');
+plot3(valores(2), valores(3), 3, '.');
 sprintf("Radio Curvatura Max: %s and %s",valores(2), valores(3))
 
 valores_dos = radiocurvatura(resultado(2), f(resultado(2)), fdt(resultado(2)), f2dt(resultado(2)));
 plotcircle(valores_dos(2), valores_dos(3), valores_dos(1));
-plot3(valores_dos(2), valores_dos(3),2, '.');
+plot3(valores_dos(2), valores_dos(3),3, '.');
 sprintf("Radio Curvatura Min: %s and %s",valores_dos(2), valores_dos(3))
 axis equal;
 %axis([-20 20 -20 20])
@@ -124,7 +124,7 @@ function h = plotcircle(xs,ys,r)
     th = 0:pi/50:2*pi;
     xunit = r*cos(th) + xs;
     yunit = r*sin(th) + ys;
-    h = plot (xunit, yunit);
+    h = plot(xunit, yunit, 'LineWidth',4);
 end
 
 % Input (x,f(x), f'(x), f''(x) )     f(x) = y
@@ -135,4 +135,9 @@ function t = radiocurvatura(xs, ys,fdtx, f2dtx)
     alfa = xs - ((fdtx*(1+ fdtx^2))/f2dtx);
     beta = ys + ((1 + fdtx^2)/f2dtx);
     t = [r_c, alfa, beta];
+end
+
+% This function should plot a square depending of x,y,z lengths and
+%
+function square = plotSquare()
 end
