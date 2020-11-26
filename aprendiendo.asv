@@ -138,6 +138,8 @@ function t = radiocurvatura(xs, ys,fdtx, f2dtx)
 end
 
 % This function should plot a square depending of x,y,z lengths and
-%
-function square = plotSquare()
+% point where you want it to plot
+% (lenth_x, length_y, length_z, )
+function square = plotSquare(length_x, length_y, length_z)
+
 end
