@@ -34,6 +34,8 @@ x = xi:xf;
 y = f(x);
 z = f(x)*0;
 
+lasX = x;
+lasY = y;
 % Puntos críticos
 cr1 = abs((2*b - sqrt((2*b)^2-12*a*c))/(6*a));
 cr2 = abs((2*b + sqrt((2*b)^2-12*a*c))/(6*a));
@@ -119,7 +121,16 @@ axis equal;
 % sprintf("Radio Curvatura Punto Inflexión: %s", rc_inflection(1))
 %daspect manual;
 
-plot_3d_cube(80, 10, 10, [0.75 0.75 0.75], 50, 70, 0);
+plot_3d_cube(80, 10, 10, [0.75 0.75 0.75], 50, 70, 0, 0);
+coche = plot_3d_cube(10, 10, 10, 'r', lasX(1) , lasY(1), 0, 35);
+for i = 1:5: length(lasX)
+    coche = plot_3d_cube(10, 10, 10, 'r', lasX(i) , lasY(i), 0, 35);
+    drawnow;
+    pause(0.1);
+    delete(coche);
+end
+
+
 
 %% Functions 
 function h = plotcircle(xs,ys,r)
@@ -131,6 +142,8 @@ end
 
 % Input (x,f(x), f'(x), f''(x) )     f(x) = y
 % [Radio de curvatura, x, y] de circulo
+
+
 function t = radiocurvatura(xs, ys,fdtx, f2dtx)
     %r_c = (1 + (fdtx)^2)^(3/2)/ abs(f2dtx);
     r_c = abs(   sqrt(   (  1  + (fdtx).^2   ).^3   )   /  abs(f2dtx));
@@ -139,24 +152,46 @@ function t = radiocurvatura(xs, ys,fdtx, f2dtx)
     t = [r_c, alfa, beta];
 end
 
-% This function should plot a square depending of x,y,z lengths and
-% point where you want it to plot. Z will be set to 0
-% (lenth_x, length_y, length_z, x_point, y_point)
-function plot_3d_cube(x_length, y_length, z_length, cube_color, x_point, y_point, z_point) %%theta in radian
-% Parameters
-%x_length = 80; y_length = 20; z_length = 20; cube_color = [0.75 0.75 0.75]; x_point = 50; y_point = 70;z_point = 0;
+% Plot Cube Plot
+function objeto = plot_3d_cube(x_length, y_length, z_length, cube_color, x_point, y_point, z_point, theta) %%theta in radian
+H=[0 ,1 ,0 ,1 ,0 ,1 ,0 ,1; 0 ,0 ,1 ,1 ,0 ,0 ,1 ,1; 0 ,0 ,0 ,0 ,1 ,1 ,1 , 1];
 
-H=[0+x_point ,1*x_length+x_point ,0+x_point ,1*x_length+x_point ,0+x_point ,1*x_length+x_point,0+x_point,1*x_length+x_point; 0+y_point,0+y_point,1*y_length+y_point,1*y_length+y_point,0+y_point,0+y_point,1*y_length+y_point,1*y_length+y_point; 0+z_point,0+z_point,0+z_point,0+z_point,1*z_length+z_point ,1*z_length+z_point,1*z_length+z_point, 1*z_length+z_point];
-%H=[0 ,80 ,0 ,80 ,0 ,80 ,0 ,80; 0 ,0 ,20 ,20 ,0 ,0 ,20 ,20; 0 ,0 ,0 ,0 ,20 ,20 ,20 , 20]; %Vertices of the cube
+    sinTheta = sind(theta);
+    cosTheta = cosd(theta);
+    
+    for j = 1 : 1 : 8
+        xs = H(1,j);
+        ys = H(2,j);
+        
+        disp(H(1,j));
+        
+        H(1,j) = xs * cosTheta - ys * sinTheta;
+        H(2,j) = ys * cosTheta + xs * sinTheta;
+        disp(H(1,j));
+        
+    end
+
+
+
+
+byLength = H .* [x_length; y_length; z_length];
+% plusPoints = byLength + [x_point; y_point; z_point];
+H = byLength + [x_point; y_point; z_point]
 S=[1 2 4 3; 1 2 6 5; 1 3 7 5; 3 4 8 7; 2 4 8 6; 5 6 8 7]; %Surfaces of the cube
+
+% xs = H(1,3);
+% ys = H(2,1:8);
+%ys = H();
+%node = H;
+% disp(xs);
+% disp(ys);
+
 figure(1)
-hold on
-H1 = zeros(size(S,1),4) ;
-H2 = zeros(size(S,1),4) ;
-H3 = zeros(size(S,1),4) ;
+% hold on
     for i=1:size(S,1)    
         Si=S(i,:); 
-        fill3(H(1,Si),H(2,Si),H(3,Si),cube_color,'facealpha',1)
+%         fill3(plusPoints(1,Si),plusPoints(2,Si),plusPoints(3,Si),cube_color,'facealpha',1)
+        objeto = patch(H(1,Si),H(2,Si),H(3,Si),cube_color);
     end
-%axis equal, hold off, view(20,10)
+% axis equal, hold off, view(20,10)
 end
