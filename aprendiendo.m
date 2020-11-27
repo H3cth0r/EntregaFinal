@@ -176,7 +176,7 @@ H=[0 ,1 ,0 ,1 ,0 ,1 ,0 ,1; 0 ,0 ,1 ,1 ,0 ,0 ,1 ,1; 0 ,0 ,0 ,0 ,1 ,1 ,1 , 1];
 
 byLength = H .* [x_length; y_length; z_length];
 % plusPoints = byLength + [x_point; y_point; z_point];
-H = byLength + [x_point; y_point; z_point]
+H = byLength + [x_point; y_point; z_point];
 S=[1 2 4 3; 1 2 6 5; 1 3 7 5; 3 4 8 7; 2 4 8 6; 5 6 8 7]; %Surfaces of the cube
 
 % xs = H(1,3);
