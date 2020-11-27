@@ -120,8 +120,8 @@ axis equal;
 % rc_inflection = radiocurvatura(answer2(1), f(answer2(1)),fdt(answer2(1)), f2dt(answer2(1)));
 % sprintf("Radio Curvatura Punto Inflexión: %s", rc_inflection(1))
 %daspect manual;
-
-plot_3d_cube(80, 10, 10, [0.75 0.75 0.75], 50, 70, 0, 0);
+%(x_location, y_location, z_location, theta_grada)
+generadorGradas(120, 90, 0, 60);
 
 coche = plot_3d_cube(10, 10, 10, 'r', lasX(1) , lasY(1), 0, 35);
 for i = 1:5: length(lasX)
@@ -185,4 +185,43 @@ objeto4 = patch(H(1,S(4,:)),H(2,S(4,:)),H(3,S(4,:)),cube_color);
 objeto5 = patch(H(1,S(5,:)),H(2,S(5,:)),H(3,S(5,:)),cube_color);
 objeto6 = patch(H(1,S(6,:)),H(2,S(6,:)),H(3,S(6,:)),cube_color);
 objeto = [objeto1, objeto2, objeto3, objeto4, objeto5, objeto6];
+end
+
+function [gradaFinal]= generadorGradas(x_location, y_location, z_location, theta_grada)
+% (x_length, y_length, z_length, cube_color, x_point, y_point, z_point, theta)
+    x_l = 10;
+    y_l = 10;
+    z_l = 10;
+    c_color = [0.75 0.75 0.75];
+    
+  %  if theta_grada >= 0 && theta_grada <= 90
+        c1x = x_location + (-35*cosd(theta_grada));
+        c1y = y_location + (-35*sind(theta_grada));
+        c2x = x_location + (-25* cosd(theta_grada));
+        c2y = y_location + (-25*sind(theta_grada));
+        c3x = x_location + (-15* cosd(theta_grada));
+        c3y = y_location + (-15*sind(theta_grada));
+        c4x = x_location + (-5* cosd(theta_grada));
+        c4y = y_location + (-5*sind(theta_grada));
+        c5x = x_location + (5* cosd(theta_grada));
+        c5y = y_location + (5*sind(theta_grada));
+        c6x = x_location + (15* cosd(theta_grada));
+        c6y = y_location + (15*sind(theta_grada));
+        c7x = x_location + (25* cosd(theta_grada));
+        c7y = y_location + (25*sind(theta_grada));
+        c8x = x_location + (35*cosd(theta_grada));
+        c8y = y_location + (35*sind(theta_grada));
+        
+   % end
+    
+    C1 = plot_3d_cube(x_l, y_l, z_l, c_color, c1x, c1y, z_location, theta_grada);
+    C2 = plot_3d_cube(x_l, y_l, z_l, c_color, c2x, c2y, z_location, theta_grada);
+    C3 = plot_3d_cube(x_l, y_l, z_l, c_color, c3x, c3y, z_location, theta_grada);
+    C4 = plot_3d_cube(x_l, y_l, z_l, c_color, c4x, c4y, z_location, theta_grada);
+    C5 = plot_3d_cube(x_l, y_l, z_l, c_color, c5x, c5y, z_location, theta_grada);
+    C6 = plot_3d_cube(x_l, y_l, z_l, c_color, c6x, c6y, z_location, theta_grada);
+    C7 = plot_3d_cube(x_l, y_l, z_l, c_color, c7x, c7y, z_location, theta_grada);
+    C8 = plot_3d_cube(x_l, y_l, z_l, c_color, c8x, c8y, z_location, theta_grada);
+    
+    gradaFinal = [C1, C2, C3, C4, C5, C6, C7, C8];
 end
