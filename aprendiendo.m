@@ -2,16 +2,10 @@
 clc;
 clear;
 
-
-xi = 30;
-yi = 230;   % (30, 230)
-xf = 260;
-yf = 80;    % (260, 80)
-x1 = 100;
-y1 = 100;   % (70, 140)
-x2 = 180;
-y2 = 270;   % (180, 270)
-
+xi = 30;    yi = 230;   % (30, 230)
+xf = 260;   yf = 80;    % (260, 80)
+x1 = 100;   y1 = 100;   % (70, 140)
+x2 = 180;   y2 = 270;   % (180, 270)
 
 yy = [yi; y1; y2; yf];
 xx = [xi^3 xi^2 xi 1;
@@ -36,37 +30,22 @@ z = f(x)*0;
 
 lasX = x;
 lasY = y;
-% Puntos críticos
-cr1 = abs((2*b - sqrt((2*b)^2-12*a*c))/(6*a));
-cr2 = abs((2*b + sqrt((2*b)^2-12*a*c))/(6*a));
-
-% Radio de la curvatura
-r1 = abs(((1+fdt(x1)^2)^(3/2))/f2dt(x1));
-r2 = abs(((1+fdt(x2)^2)^(3/2))/f2dt(x2));
-
 
 lfdt = @(x) sqrt(1 + fdt(x).^2);
 longitudPista = integral(lfdt, xi, xf);
 
-% Graficación
-%axes('XLim',[0 300],'YLim',[0 300],'ZLim',[0 300],'XDir','reverse','YDir','reverse');
 view(2)
 hold on;
 line(x,y,z+1,'Color','k','LineWidth',4)
 line(x,y,z+1,'Color','y','LineStyle','--')
 
 %% Crando base de mapa
-
-% Define vertices
 vertices = [
     0,0,0;
     300,0,0;
     300,300,0;
     0,300,0;]; 
-
-% Define faces
-faces = [
-    1, 2, 3, 4]; % face #1
+faces = [1, 2, 3, 4]; % face #1
 
 % Draw patch
 figure(1);
@@ -107,12 +86,21 @@ disp("Longitud de la pista: " + longitud_pista);
 valores = radiocurvatura(resultado(1), f(resultado(1)), fdt(resultado(1)), f2dt(resultado(1)));
 plotcircle(valores(2), valores(3), valores(1));
 plot3(valores(2), valores(3), 3, '.');
-sprintf("Radio Curvatura Max: %s and %s",valores(2), valores(3))
+sprintf("Radio de Curvatura I: %s",valores(1))
+sprintf("Centro de Curvatura I: %s and %s",valores(2), valores(3))
 
 valores_dos = radiocurvatura(resultado(2), f(resultado(2)), fdt(resultado(2)), f2dt(resultado(2)));
 plotcircle(valores_dos(2), valores_dos(3), valores_dos(1));
 plot3(valores_dos(2), valores_dos(3),3, '.');
-sprintf("Radio Curvatura Min: %s and %s",valores_dos(2), valores_dos(3))
+sprintf("Radio de Curvatura II: %s",valores_dos(1))
+sprintf("Centro de Curvatura II: %s and %s",valores_dos(2), valores_dos(3))
+
+% Maximun Velocity (angle, g, mu, R)
+% Tenemos que checar el coeficiente de fricción
+sprintf("Velocidad Max radio de curvatura I: %s", velocidadMaxima(0, 9.81, 0.867, valores(1)))
+sprintf("Velocidad Max radio de curvatura II: %s", velocidadMaxima(0, 9.81, 0.867, valores_dos(1)))
+
+
 %axis([-20 20 -20 20])
 
 % rc_inflection = radiocurvatura(answer2(1), f(answer2(1)),fdt(answer2(1)), f2dt(answer2(1)));
@@ -120,7 +108,7 @@ sprintf("Radio Curvatura Min: %s and %s",valores_dos(2), valores_dos(3))
 %daspect manual;
 %(x_location, y_location, z_location, theta_grada)
 
-%% Movimiento del auto x2 
+%% Movimiento del auto
 generadorGradas(120, 90, 0, 60);
 
 contador = 0;
@@ -156,9 +144,13 @@ function h = plotcircle(xs,ys,r)
     h = plot(xunit, yunit, 'LineWidth',4);
 end
 
-% Input (x,f(x), f'(x), f''(x) )     f(x) = y
-% [Radio de curvatura, x, y] de circulo
-
+function [v_max] = velocidadMaxima(angle, g, mu, R)
+    if angle == 0
+        v_max = 3.6*sqrt(g*mu*R);
+    else
+        v_max = 3.6*sqrt(g*R*(cosd(angle)*(mu+tand(angle))/(1-mu*tand(angle))));
+    end
+end
 
 function t = radiocurvatura(xs, ys,fdtx, f2dtx)
     %r_c = (1 + (fdtx)^2)^(3/2)/ abs(f2dtx);
@@ -185,14 +177,8 @@ H=[0 ,1 ,0 ,1 ,0 ,1 ,0 ,1; 0 ,0 ,1 ,1 ,0 ,0 ,1 ,1; 0 ,0 ,0 ,0 ,1 ,1 ,1 , 1];
 
 byLength = H .* [x_length; y_length; z_length];
 H = byLength + [x_point; y_point; z_point];
-S=[1 2 4 3; 1 2 6 5; 1 3 7 5; 3 4 8 7; 2 4 8 6; 5 6 8 7]; %Surfaces of the cube
+S=[1 2 4 3; 1 2 6 5; 1 3 7 5; 3 4 8 7; 2 4 8 6; 5 6 8 7];
 
-% elPatch = patch(H(1,1),H(2,1),H(3,1),cube_color);
-%     for i=1:size(S,1)    
-%         Si=S(i,:); 
-%         elPatch = patch(H(1,Si),H(2,Si),H(3,Si),cube_color);
-%     end
-% objeto = elPatch;
 objeto1 = patch(H(1,S(1,:)),H(2,S(1,:)),H(3,S(1,:)),cube_color);
 objeto2 = patch(H(1,S(2,:)),H(2,S(2,:)),H(3,S(2,:)),cube_color);
 objeto3 = patch(H(1,S(3,:)),H(2,S(3,:)),H(3,S(3,:)),cube_color);
