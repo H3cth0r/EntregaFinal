@@ -123,10 +123,11 @@ axis equal;
 %(x_location, y_location, z_location, theta_grada)
 generadorGradas(120, 90, 0, 60);
 
-coche = plot_3d_cube(10, 10, 10, 'r', lasX(1) , lasY(1), 0, 35);
+% (xp,yp, theta)
+coche = generadorAuto(lasX(1), lasY(1), 45);
 for i = 1:5: length(lasX)
     delete(coche)
-    coche = plot_3d_cube(10, 10, 10, 'r', lasX(i) , lasY(i), 0, 35);
+    coche = generadorAuto(lasX(i), lasY(i), 45);
     %drawnow;
     pause(0.1);
 end
@@ -224,4 +225,29 @@ function [gradaFinal]= generadorGradas(x_location, y_location, z_location, theta
     C8 = plot_3d_cube(x_l, y_l, z_l, c_color, c8x, c8y, z_location, theta_grada);
     
     gradaFinal = [C1, C2, C3, C4, C5, C6, C7, C8];
+end
+
+
+% (x_length, y_length, z_length, cube_color, x_point, y_point, z_point, theta)
+function [carrito] = generadorAuto(xp,yp, theta)
+    
+    p1x = xp + (-12*cosd(theta));
+    p1y = yp + (-12*sind(theta));
+    p2x = xp + (-4*cosd(theta));
+    p2y = yp + (-4*sind(theta));
+    p3x = xp + (4*cosd(theta));
+    p3y = yp + (4*sind(theta));
+    p4x = xp + (12*cosd(theta));
+    p4y = yp + (12*sind(theta));
+    p5x = xp + (4*cosd(theta));
+    p5y = yp + (4*sind(theta));
+    
+    
+    car1 = plot_3d_cube(8, 8, 8, 'r', p1x, p1y, 2, theta);
+    car2 = plot_3d_cube(8, 8, 8, 'r', p2x, p2y, 2, theta);
+    car3 = plot_3d_cube(8, 8, 8, 'r', p3x, p3y, 2, theta);
+    car4 = plot_3d_cube(8, 8, 8, 'r', p4x, p4y, 2, theta);
+    car5 = plot_3d_cube(8, 8, 8, 'b', p5x, p5y, 6, theta);
+    
+    carrito = [car1, car2, car3, car4, car5];
 end

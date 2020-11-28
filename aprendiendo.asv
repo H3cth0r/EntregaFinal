@@ -121,14 +121,13 @@ axis equal;
 % sprintf("Radio Curvatura Punto Inflexión: %s", rc_inflection(1))
 %daspect manual;
 %(x_location, y_location, z_location, theta_grada)
-generadorGradas(50, 70, 0, 35);
+generadorGradas(120, 90, 0, 60);
 
-%plot_3d_cube(80, 10, 10, [0.75 0.75 0.75], 50, 70, 0, 0);
-
-coche = plot_3d_cube(10, 10, 10, 'r', lasX(1) , lasY(1), 0, 35);
+% (xp,yp, theta)
+coche = generadorAuto(lasX(1), lasY(1), 45);
 for i = 1:5: length(lasX)
     delete(coche)
-    coche = plot_3d_cube(10, 10, 10, 'r', lasX(i) , lasY(i), 0, 35);
+    coche = generadorAuto(lasX(i), lasY(i), 45);
     %drawnow;
     pause(0.1);
 end
@@ -197,7 +196,6 @@ function [gradaFinal]= generadorGradas(x_location, y_location, z_location, theta
     c_color = [0.75 0.75 0.75];
     
   %  if theta_grada >= 0 && theta_grada <= 90
-        c1x;
         c1x = x_location + (-35*cosd(theta_grada));
         c1y = y_location + (-35*sind(theta_grada));
         c2x = x_location + (-25* cosd(theta_grada));
@@ -217,14 +215,39 @@ function [gradaFinal]= generadorGradas(x_location, y_location, z_location, theta
         
    % end
     
-    C1 = plot_3d_cube(x_l, y_l, z_l, c_color, c1x, y_location, z_location, theta_grada);
-    C2 = plot_3d_cube(x_l, y_l, z_l, c_color, c2x, y_location, z_location, theta_grada);
-    C3 = plot_3d_cube(x_l, y_l, z_l, c_color, c3x, y_location, z_location, theta_grada);
-    C4 = plot_3d_cube(x_l, y_l, z_l, c_color, c4x, y_location, z_location, theta_grada);
-    C5 = plot_3d_cube(x_l, y_l, z_l, c_color, c5x, y_location, z_location, theta_grada);
-    C6 = plot_3d_cube(x_l, y_l, z_l, c_color, c6x, y_location, z_location, theta_grada);
-    C7 = plot_3d_cube(x_l, y_l, z_l, c_color, c7x, y_location, z_location, theta_grada);
-    C8 = plot_3d_cube(x_l, y_l, z_l, c_color, c8x, y_location, z_location, theta_grada);
+    C1 = plot_3d_cube(x_l, y_l, z_l, c_color, c1x, c1y, z_location, theta_grada);
+    C2 = plot_3d_cube(x_l, y_l, z_l, c_color, c2x, c2y, z_location, theta_grada);
+    C3 = plot_3d_cube(x_l, y_l, z_l, c_color, c3x, c3y, z_location, theta_grada);
+    C4 = plot_3d_cube(x_l, y_l, z_l, c_color, c4x, c4y, z_location, theta_grada);
+    C5 = plot_3d_cube(x_l, y_l, z_l, c_color, c5x, c5y, z_location, theta_grada);
+    C6 = plot_3d_cube(x_l, y_l, z_l, c_color, c6x, c6y, z_location, theta_grada);
+    C7 = plot_3d_cube(x_l, y_l, z_l, c_color, c7x, c7y, z_location, theta_grada);
+    C8 = plot_3d_cube(x_l, y_l, z_l, c_color, c8x, c8y, z_location, theta_grada);
     
     gradaFinal = [C1, C2, C3, C4, C5, C6, C7, C8];
+end
+
+
+% (x_length, y_length, z_length, cube_color, x_point, y_point, z_point, theta)
+function [carrito] = generadorAuto(xp,yp, theta)
+    
+    p1x = xp + (-12*cosd(theta));
+    p1y = yp + (-12*sind(theta));
+    p2x = xp + (-4*cosd(theta));
+    p2y = yp + (-4*sind(theta));
+    p3x = xp + (4*cosd(theta));
+    p3y = yp + (4*sind(theta));
+    p4x = xp + (12*cosd(theta));
+    p4y = yp + (12*sind(theta));
+    p5x = xp + (2.5*cosd(theta));
+    p5y = yp + (2.5*sind(theta));
+    
+    
+    car1 = plot_3d_cube(5, 5, 5, 'r', p1x, p1y, 2, theta);
+    car2 = plot_3d_cube(5, 5, 5, 'r', p2x, p2y, 2, theta);
+    car3 = plot_3d_cube(5, 5, 5, 'r', p3x, p3y, 2, theta);
+    car4 = plot_3d_cube(5, 5, 5, 'r', p4x, p4y, 2, theta);
+    car5 = plot_3d_cube(5, 5, 5, 'b', p5x, p5y, 4.5, theta);
+    
+    carrito = [car1, car2, car3, car4, car5];
 end
