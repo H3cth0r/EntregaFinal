@@ -50,13 +50,12 @@ longitudPista = integral(lfdt, xi, xf);
 
 % Graficación
 %axes('XLim',[0 300],'YLim',[0 300],'ZLim',[0 300],'XDir','reverse','YDir','reverse');
-view(3)
+view(2)
 hold on;
 line(x,y,z+1,'Color','k','LineWidth',4)
 line(x,y,z+1,'Color','y','LineStyle','--')
 
-
-% clear; close all;
+%% Crando base de mapa
 
 % Define vertices
 vertices = [
@@ -80,7 +79,7 @@ view([142.5, 30]);
 camlight;
 
 
-%% Additional
+%% Calculos
 syms x
 % Min N Max points
 primeraD = (a*(3*x.^2)) + (b*(2*x)) + c;
@@ -114,22 +113,32 @@ valores_dos = radiocurvatura(resultado(2), f(resultado(2)), fdt(resultado(2)), f
 plotcircle(valores_dos(2), valores_dos(3), valores_dos(1));
 plot3(valores_dos(2), valores_dos(3),3, '.');
 sprintf("Radio Curvatura Min: %s and %s",valores_dos(2), valores_dos(3))
-axis equal;
 %axis([-20 20 -20 20])
 
 % rc_inflection = radiocurvatura(answer2(1), f(answer2(1)),fdt(answer2(1)), f2dt(answer2(1)));
 % sprintf("Radio Curvatura Punto Inflexión: %s", rc_inflection(1))
 %daspect manual;
 %(x_location, y_location, z_location, theta_grada)
+
+%% Movimiento del auto x2 
 generadorGradas(120, 90, 0, 60);
 
+contador = 0;
+while contador <= 3
 % (xp,yp, theta)
-coche = generadorAuto(lasX(1), lasY(1), 45);
+coche = generadorAuto(lasX(1), lasY(1), atand(lfdt(1)));
 for i = 1:5: length(lasX)
     delete(coche)
-    coche = generadorAuto(lasX(i), lasY(i), 45);
+    if lasX(i) > 81.28 && lasX(i) < 199
+        coche = generadorAuto(lasX(i), lasY(i), atand(lfdt(i))+180);
+    else 
+        coche = generadorAuto(lasX(i), lasY(i), atand(lfdt(i)));
     %drawnow;
-    pause(0.1);
+    end
+     pause(0.1);
+end
+delete(coche)
+contador = contador +1;
 end
 
 
@@ -251,3 +260,20 @@ function [carrito] = generadorAuto(xp,yp, theta)
     
     carrito = [car1, car2, car3, car4, car5];
 end
+
+% function arbol = generadorArboles(point_x, point_y)
+%     %arboles de 3*3
+%     arb1 = plot_3d_cube(3, 3, 3, [0.2 0 0], point_x, point_y, 0, 0);
+%     arb2 = plot_3d_cube(3, 3, 3, [0.2 0 0], point_x, point_y, 3, 0);
+%     arb3 = plot_3d_cube(3, 3, 3, [0.2 0 0], point_x, point_y, 6, 0);
+%     
+%     vertices = [0+point_x, 1.5, 7;3+point_x, 1.5, 7;3+point_x ,1.5, 11;point_x, 1.5, 11;]; 
+%     faces = [1, 2, 3, 4]; % face #1
+%     vertices2 =[1.5, 0+point_y, 7; 1.5, 3+point_y, 7; 1.5, point_y, 11; 1.5, 0+point_y, 11];
+%     faces2 =[1, 2, 3, 4];
+% 
+%     hojas1 = patch('Faces', faces, 'Vertices', vertices, 'FaceColor', 'g');
+%     hojas2 = patch('Faces', faces2, 'Vertices', vertices2, 'FaceColor', 'g');
+%     
+%     arbol = [arb1, arb2, arb3, hojas1, hojas2];
+% end
