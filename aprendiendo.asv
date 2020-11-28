@@ -127,8 +127,10 @@ contador = 0;
 while contador <= 3
 % (xp,yp, theta)
 coche = generadorAuto(lasX(1), lasY(1), atand(lfdt(1)));
+ubicacion = text(lasX(1), lasY(1), 10, ['\leftarrow X: %s', lasX(i)]);
 for i = 1:5: length(lasX)
     delete(coche)
+    delete(ubicacion)
     if lasX(i) > 81.28 && lasX(i) < 199
         coche = generadorAuto(lasX(i), lasY(i), atand(lfdt(i))+180);
     else 
@@ -136,9 +138,10 @@ for i = 1:5: length(lasX)
     %drawnow;
     end
      pause(0.1);
+     ubicacion = text(lasX(i), lasY(i), 10, ['\leftarrow X: %s', lasX(i)]);
 end
 delete(coche)
-
+contador = contador +1;
 end
 
 

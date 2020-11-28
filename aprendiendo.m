@@ -127,8 +127,12 @@ contador = 0;
 while contador <= 3
 % (xp,yp, theta)
 coche = generadorAuto(lasX(1), lasY(1), atand(lfdt(1)));
+ubicacion = text(lasX(1),  lasY(1), 7,['\leftarrow X: ', num2str(lasY(1))], 'Color','k', 'FontSize', 8);
 for i = 1:5: length(lasX)
     delete(coche)
+    delete(ubicacion)
+    punto_ubi = lasX(i);
+    ubicacion = text(lasX(i),  lasY(i), 7,['\leftarrow X: ', num2str(lasY(i))], 'Color','k', 'FontSize', 8);
     if lasX(i) > 81.28 && lasX(i) < 199
         coche = generadorAuto(lasX(i), lasY(i), atand(lfdt(i))+180);
     else 
@@ -138,6 +142,7 @@ for i = 1:5: length(lasX)
      pause(0.1);
 end
 delete(coche)
+delete(ubicacion)
 contador = contador +1;
 end
 
